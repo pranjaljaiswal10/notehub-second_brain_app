@@ -11,3 +11,5 @@ const authVerify=async (req:Request,res:Response,next:NextFunction) => {
         
     }
 }
+
+export default authVerify;
