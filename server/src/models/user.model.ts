@@ -1,4 +1,6 @@
-import { Schema,models,model } from "mongoose";
+import { Schema, models, model } from "mongoose";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export interface IUser {
   username: string;
@@ -31,4 +33,22 @@ const userSchema = new Schema<IUser>(
   }
 );
 
-export const User=models?.User || model<IUser>("User",userSchema)
+userSchema.methods.getJWT = function () {
+  const user = this;
+  const token = jwt.sign(
+    { id: user._id },
+    process.env.JWT_SECRET_KEY as string,
+    {
+      expiresIn: "1d",
+    }
+  );
+  return token;
+};
+
+userSchema.methods.validatePassword = async function (passwordByUser: string) {
+  const user = this;
+  const validate = await bcrypt.compare(passwordByUser, user.password);
+  return validate;
+};
+
+export const User = models?.User || model<IUser>("User", userSchema);

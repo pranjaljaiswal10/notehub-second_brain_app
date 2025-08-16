@@ -2,8 +2,10 @@ import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import helmet from "helmet";
-import authRouter from "./routes/userroute.ts";
-import connectDB from "./db/index.ts";
+import authRouter from "./routes/user.route";
+import connectDB from "./db/index";
+import contentRouter from "./routes/content.route";
+import shareRouter from "./routes/share.route";
 
 dotenv.config({
   path: "./.env",
@@ -18,6 +20,10 @@ app.use(helmet());
 app.use(morgan(morganFormat));
 
 app.use("/api/v1/users", authRouter);
+app.use("/api/v1/content",contentRouter)
+app.use("api/v1/share",shareRouter)
+
+
 
 const port = process.env.PORT || 4000;
 

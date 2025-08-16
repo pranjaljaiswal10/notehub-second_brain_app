@@ -1,6 +1,6 @@
 import z from "zod";
 
-const signInSchema = z.object({
+export const signInSchema = z.object({
   email: z.email({ error: "Email is not valid" }),
   password: z
     .string()
@@ -15,3 +15,5 @@ const signInSchema = z.object({
       error: "Password must be atleastone special character",
     }),
 });
+
+export type signInInput = z.infer<typeof signInSchema>;
